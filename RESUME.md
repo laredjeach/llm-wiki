@@ -99,7 +99,7 @@ Re-verify after restart:
    a bump and a README/changelog entry per `.claude/release-checklist.md`. Not done.
 3. **Open upstream PR** to `nvk/llm-wiki` when the command body is reviewed (command above).
 4. **Repo move — ✅ DONE (2026-06-20).** Repo now lives at
-   `/Users/jaredleach/Documents/Projects/llm-wiki` (moved from `…/Project library/Tools/llm-wiki`).
+   `/Users/jaredleach/Documents/Brain-Master/Projects/llm-wiki` (moved from `…/Project library/Tools/llm-wiki`).
    Git, remotes, and untracked files all carried over cleanly. The Claude project state
    dir (memory + transcripts) was migrated alongside to the matching new slug
    `~/.claude/projects/-Users-jaredleach-Documents-Projects-llm-wiki/`.
