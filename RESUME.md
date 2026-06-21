@@ -98,10 +98,11 @@ Re-verify after restart:
 2. **Decide on version bump + changelog** — adding a command + category likely warrants
    a bump and a README/changelog entry per `.claude/release-checklist.md`. Not done.
 3. **Open upstream PR** to `nvk/llm-wiki` when the command body is reviewed (command above).
-4. **Planned repo move (NOT done):**
-   `/Users/jaredleach/Project library/Tools/llm-wiki` → `/Users/jaredleach/Documents/Projects/llm-wiki`
-   via a single `mv` (carries `.git` + untracked). Invalidates the session CWD — restart
-   the agent rooted at the new path afterward.
+4. **Repo move — ✅ DONE (2026-06-20).** Repo now lives at
+   `/Users/jaredleach/Documents/Projects/llm-wiki` (moved from `…/Project library/Tools/llm-wiki`).
+   Git, remotes, and untracked files all carried over cleanly. The Claude project state
+   dir (memory + transcripts) was migrated alongside to the matching new slug
+   `~/.claude/projects/-Users-jaredleach-Documents-Projects-llm-wiki/`.
 5. **Brain-Master integration (DEFERRED — do not start unprompted):** the user intends to
    eventually wire llm-wiki (`/wiki:ingest` / `/wiki:ingest-stack`) as an easy ingestion
    trigger for their **Brain-Master vault** at `/Users/jaredleach/Documents/Brain-Master`.
@@ -121,7 +122,7 @@ Re-verify after restart:
 - **Plugin source of truth:** `claude-plugin/commands/*.md`, `claude-plugin/skills/wiki-manager/`
   (`SKILL.md` + `references/*.md`). Generated mirrors under `plugins/` — never hand-edit.
 - **Out-of-repo Claude memory (NOT visible to Cursor):**
-  `/Users/jaredleach/.claude/projects/-Users-jaredleach-Project-library-Tools-llm-wiki/memory/`
+  `/Users/jaredleach/.claude/projects/-Users-jaredleach-Documents-Projects-llm-wiki/memory/`
   → `brain-master-integration-intent.md` (the deferral above) + `MEMORY.md` index.
   Key facts are duplicated into this RESUME.md so Cursor isn't blind to them.
 - **Parked personal side-thread (NOT part of llm-wiki):**
