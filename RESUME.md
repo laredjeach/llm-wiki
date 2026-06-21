@@ -1,133 +1,143 @@
-# 🔧 RESUME HERE — WIP Handoff (wiki `stacks` feature)
+# 🔧 RESUME HERE — Handoff (wiki `stacks` feature)
 
-> **Temporary working note.** Delete this file once the `stacks` work is committed,
-> reviewed, and merged. It captures session context that would otherwise be lost on
-> restart. Last updated: 2026-06-20.
+> **Working handoff note** for resuming in Claude Code, Cursor, or any agent. Captures
+> session context that would otherwise be lost on restart. Delete once the `stacks` work
+> is reviewed and merged upstream. **Last updated: 2026-06-20** (post-commit reconcile).
 
 ---
 
-## TL;DR — where we left off
+## TL;DR — current state
 
 We added a new first-class compiled wiki category, **`stacks`** (`category: stack` →
 `wiki/stacks/`), sibling to `concepts/topics/references/theses`, plus a new
-`/wiki:ingest-stack` command. **All functional tests pass.** Nothing is committed yet —
-everything below is in the working tree on branch `master`.
+`/wiki:ingest-stack` command, and fully wired it into routing, the skill, docs, and
+mirrors. **All structural tests pass. Everything is committed and pushed.**
 
-**The single most important next step:** review/refine `claude-plugin/commands/ingest-stack.md`
-(never shown to the user yet), then commit on a feature branch, then push.
+- **Branch:** `feat/wiki-stacks` — **working tree CLEAN**, nothing uncommitted.
+- **HEAD:** `774f44c Note fork provenance and push status in RESUME`
+  on top of `2f54461 Add wiki stacks category and /wiki:ingest-stack command`
+  (base `75623c6 Format v0.12 changelog bullets`). 2 commits ahead of `master`.
+- **Pushed:** `origin/feat/wiki-stacks` is in sync with local HEAD (fork `laredjeach/llm-wiki`).
+- **Plugin version:** still `0.12.0` — **not bumped** (open decision, see below).
 
----
-
-## Git state at handoff
-
-- Branch: `feat/wiki-stacks` (off `master` base `75623c6 Format v0.12 changelog bullets`).
-- **Committed + pushed** to the fork as `2f54461 Add wiki stacks category and /wiki:ingest-stack command` (92 files).
-- Plugin version still `0.12.0` — **not bumped** (see Open Items).
-
-### Provenance / remotes
-- This working copy is a **fork**: `origin` → `https://github.com/laredjeach/llm-wiki.git` (where we push),
-  `upstream` → `https://github.com/nvk/llm-wiki.git` (the parent it was cloned from).
-- GitHub also records the link: `laredjeach/llm-wiki` is a fork with `parent: nvk/llm-wiki`.
-- Branch `feat/wiki-stacks` is pushed to `origin`; open a PR to `upstream` (nvk) when ready:
-  `gh pr create --repo nvk/llm-wiki --head laredjeach:feat/wiki-stacks`.
-
-### New (untracked) files — ours
-```
-claude-plugin/commands/ingest-stack.md                     # /wiki:ingest-stack (NEEDS REVIEW)
-tests/fixtures/golden-wiki/wiki/stacks/_index.md           # stacks index
-tests/fixtures/golden-wiki/wiki/stacks/template-stack.md   # superset template (lint-clean)
-tests/fixtures/golden-wiki/inbox/.gitkeep                  # fixes pre-existing fixture bug
-tests/fixtures/golden-wiki/inbox/.processed/.gitkeep       # fixes pre-existing fixture bug
-```
-
-### Modified (by area)
-- **Spec:** `AGENTS.md`, `claude-plugin/skills/wiki-manager/references/wiki-structure.md`,
-  `claude-plugin/skills/wiki-manager/references/linting.md`,
-  `claude-plugin/skills/wiki-manager/SKILL.md`, `claude-plugin/commands/wiki.md`
-- **Local linter:** `scripts/llm-wiki` (4 stack edits), `scripts/sync-codex-plugin.sh` (router line)
-- **Tests:** `tests/test-structure.sh`, golden `_index.md` files, **36 regenerated defect fixtures**
-- **Generated mirrors (do NOT hand-edit):** `plugins/llm-wiki/**`, `plugins/llm-wiki-opencode/**`
-- `README.md` (modified — verify whether intentional before committing)
+**Single most important next step:** review/refine the LLM instructions in
+`claude-plugin/commands/ingest-stack.md` — it was scaffolded and wired, but the body
+prose has not had a deliberate design pass. Then decide on version bump + upstream PR.
 
 ---
 
-## What changed and why
+## Provenance / remotes
 
-1. **`stacks` is a superset schema, not a new file kind.** A stack page is a normal wiki
-   article with `category: stack` PLUS extra fields. We deliberately reused the existing
-   placement/lint machinery instead of a `type:`-keyed kind (like theses).
-   - Required (standard article) fields: `title, category: stack, sources, created, updated, tags, confidence, summary`
-   - Extra stack fields: `topic, date, scenario, llm_usage, stack_type, related_topics`
-   - Body: `## Problem Context` · `## Problem-Oriented Notes` (`### Key Decisions`) ·
-     `## Normalized Stack Table` · `## Comparison & Ratings Table` · `## Stack Overview` · `## LLM Hints`
-
-2. **Two linters both had to learn `stack`:**
-   - Spec linter (`references/linting.md`): C11 placement map (`stack → wiki/stacks/`),
-     C12 allowlist (`stacks/`), C13 category-inference line.
-   - Deterministic CLI (`scripts/llm-wiki`): `ARTICLE_CATEGORIES`, `ARTICLE_DIRS`,
-     `WIKI_ALLOWED`, and the `ensure_dir_index` targets list — 4 minimal edits, no exemptions
-     (user explicitly did not want template-exemption logic).
-
-3. **Template is fully lint-clean** by mirroring `sample-concept.md`: non-empty `summary`/`tags`,
-   `sources: [raw/articles/2026-01-01-sample-article.md]` (a real fixture file), `volatility: warm`.
-
-4. **`inbox/.gitkeep` placeholders fix a PRE-EXISTING bug, unrelated to stacks:** the golden
-   fixture's `inbox/` is an empty dir git can't track, so it vanished on checkout and made
-   `test-local-cli-lint.sh` fail on any fresh clone (unconditional inbox check at
-   `scripts/llm-wiki:545-552`). Proven against pristine `git archive HEAD`.
-
-5. **Router:** `ingest-stack` routing hint was added to the source `SKILL.md` and the
-   `sync-codex-plugin.sh` replacement list (aligned with our work; keep it).
+- This working copy is a **fork**: `origin` → `https://github.com/laredjeach/llm-wiki.git`
+  (where we push), `upstream` → `https://github.com/nvk/llm-wiki.git` (parent).
+- Open a PR upstream when ready:
+  `gh pr create --repo nvk/llm-wiki --head laredjeach:feat/wiki-stacks`
+- Auth: GitHub CLI web login + **HTTPS** transport, never SSH (see `CLAUDE.md`).
 
 ---
 
-## Test status
+## What's in the feature (committed)
+
+### The `stacks` category — superset schema, not a new file kind
+A stack page is a normal wiki article with `category: stack` PLUS extra fields, so it
+reuses the existing placement/lint machinery (no `type:`-keyed kind like theses).
+- Standard article fields: `title, category: stack, sources, created, updated, tags, confidence, summary`
+- Extra stack fields: `topic, date, scenario, llm_usage, stack_type, related_topics`
+- Body: `## Problem Context` · `## Problem-Oriented Notes` (`### Key Decisions`) ·
+  `## Normalized Stack Table` · `## Comparison & Ratings Table` · `## Stack Overview` · `## LLM Hints`
+
+### Both linters learned `stack`
+- Spec linter (`references/linting.md`): C11 placement map, C12 allowlist, C13 inference.
+- Deterministic CLI (`scripts/llm-wiki`): `ARTICLE_CATEGORIES`, `ARTICLE_DIRS`,
+  `WIKI_ALLOWED`, `ensure_dir_index` targets — 4 minimal edits, no template-exemption logic.
+
+### `/wiki:ingest-stack` command + full wiring
+- `claude-plugin/commands/ingest-stack.md` — the command (⚠️ body prose still needs a review pass).
+- **Router** (`claude-plugin/commands/wiki.md`): added priority **`0c | Stack`** NL-routing row
+  (mirrors how `0 | Collection Ingest` exposes `/wiki:ingest-collection`) + a post-init suggestion.
+- **Skill** (`SKILL.md`): added a first-class **`### Stack Pages`** workflow entry.
+- **Codex sync** (`scripts/sync-codex-plugin.sh`): added an `ingest-stack` line to the
+  Codex-specific Workflows replacement block (Codex rewrites that section, so the source
+  SKILL edit alone doesn't reach it).
+- **Docs:** `AGENTS.md` (operations list + full `### Ingest Stack` section), `README.md`
+  (structure tree `stacks/` line, command-table rows, usage examples).
+- **Eval:** `tests/promptfooconfig.yaml` — added a stack-routing test case.
+- **Generated mirrors** regenerated + committed: `plugins/llm-wiki/**`, `plugins/llm-wiki-opencode/**`.
+
+### Fixtures
+- `tests/fixtures/golden-wiki/wiki/stacks/_index.md`, `template-stack.md` (lint-clean superset template).
+- `inbox/.gitkeep` + `inbox/.processed/.gitkeep` — fix a PRE-EXISTING fixture bug (empty `inbox/`
+  vanished on fresh checkout, breaking `test-local-cli-lint.sh`). Unrelated to stacks.
+- 36 regenerated defect fixtures.
+
+---
+
+## Test status (last run this session)
 
 | Test | Result |
 |------|--------|
 | `test-plugin-validate.sh` | ✅ 96/96 |
 | `test-structure.sh` | ✅ 183/183 |
 | `test-local-cli-lint.sh` | ✅ 22/22 |
-| `test-session-capture.sh` | ✅ 17/17 |
-| `test-codex-sync.sh` / `test-opencode-sync.sh` | ⏳ RED **only as commit-guards** (`git diff --quiet HEAD -- plugins/`). Mirrors are correct; they go **green once `plugins/` is committed.** |
-| promptfoo router eval | ⚠️ NOT run — recommended for the new `ingest-stack` routing (costs ~$2-5, needs `ANTHROPIC_API_KEY`) |
+| `test-session-capture.sh` | ✅ 17/17 (per prior run) |
+| `test-codex-sync.sh` / `test-opencode-sync.sh` | ✅ green now that `plugins/` is committed (they only RED as commit-guards on uncommitted mirror drift) |
+| promptfoo router eval (stack case) | ⚠️ **Could not validate locally** — the eval workspace has no resolvable wiki hub, so the `/wiki` router replies "I couldn't find your wiki" and bails before dispatching to ANY skill. Confirmed by running the existing `ingest-collection` routing case as a baseline — it fails identically. Pre-existing harness limitation, not a defect in our routing. CI provides a resolvable hub. (Also note: running it locally needs `@anthropic-ai/claude-agent-sdk`, which is not a saved dependency.) |
 | `test-codex-runtime.sh` | ⚠️ NOT run — optional, only when touching Codex packaging |
 
-To re-verify after restart:
+Re-verify after restart:
 ```bash
 ./tests/test-plugin-validate.sh && ./tests/test-structure.sh && ./tests/test-local-cli-lint.sh
-# sync tests only pass once committed:
-./scripts/sync-codex-plugin.sh && ./scripts/sync-opencode-plugin.sh
-./tests/test-codex-sync.sh && ./tests/test-opencode-sync.sh
 ```
 
 ---
 
 ## Open items / next steps (in order)
 
-1. **Review & refine `claude-plugin/commands/ingest-stack.md`** — the LLM instructions were
-   scaffolded but never shown/refined. This is the main unfinished design work.
-2. **Bump version + changelog?** Adding a command + category likely warrants a version bump
-   and README/changelog entry per `.claude/release-checklist.md`. Not done.
-3. **Commit** on a feature branch (we're on `master`, the default — branch first):
-   `git switch -c feat/wiki-stacks`, stage stack changes + regenerated `plugins/`, commit.
-   This greens the two sync tests.
-4. **Push (GitHub).** ✅ Done — `feat/wiki-stacks` is pushed to the fork `origin`
-   (`laredjeach/llm-wiki`). Auth is `gh` HTTPS (per `CLAUDE.md`; no write access to `nvk`).
-   To open a PR upstream when ready:
-   `gh pr create --repo nvk/llm-wiki --head laredjeach:feat/wiki-stacks`.
-5. **Planned repo move (NOT done):**
+1. **Review & refine `claude-plugin/commands/ingest-stack.md` body prose** — the main
+   unfinished design work. Everything around it (routing, schema, lint, mirrors) is done.
+2. **Decide on version bump + changelog** — adding a command + category likely warrants
+   a bump and a README/changelog entry per `.claude/release-checklist.md`. Not done.
+3. **Open upstream PR** to `nvk/llm-wiki` when the command body is reviewed (command above).
+4. **Planned repo move (NOT done):**
    `/Users/jaredleach/Project library/Tools/llm-wiki` → `/Users/jaredleach/Documents/Projects/llm-wiki`
-   via a single `mv`. Safe (carries `.git` + untracked). Will invalidate the session CWD —
-   restart Claude rooted at the new path afterward.
+   via a single `mv` (carries `.git` + untracked). Invalidates the session CWD — restart
+   the agent rooted at the new path afterward.
+5. **Brain-Master integration (DEFERRED — do not start unprompted):** the user intends to
+   eventually wire llm-wiki (`/wiki:ingest` / `/wiki:ingest-stack`) as an easy ingestion
+   trigger for their **Brain-Master vault** at `/Users/jaredleach/Documents/Brain-Master`.
+   Decisions are on hold until the user finishes
+   their other systems; they will later use Claude Code + Cursor to cross-reference, detect
+   conflicts, and design how to merge / connect / guard the systems. **Hold for explicit go-ahead.**
+6. **HUB not yet created** — no `~/.config/llm-wiki/config.json`, no `~/wiki/`. A "research"
+   topic-wiki init was requested but PAUSED pending the user's choice of HUB location.
+
+---
+
+## Where context lives (for handoff to Cursor / another agent)
+
+- **This file (`RESUME.md`)** — the human-readable handoff. Cursor can read it directly.
+- **In-repo project docs:** `README.md` (public story + changelog), `AGENTS.md` (deepest spec),
+  `CLAUDE.md` (dev/test/sync rules for this repo), `.claude/release-checklist.md`.
+- **Plugin source of truth:** `claude-plugin/commands/*.md`, `claude-plugin/skills/wiki-manager/`
+  (`SKILL.md` + `references/*.md`). Generated mirrors under `plugins/` — never hand-edit.
+- **Out-of-repo Claude memory (NOT visible to Cursor):**
+  `/Users/jaredleach/.claude/projects/-Users-jaredleach-Project-library-Tools-llm-wiki/memory/`
+  → `brain-master-integration-intent.md` (the deferral above) + `MEMORY.md` index.
+  Key facts are duplicated into this RESUME.md so Cursor isn't blind to them.
+- **Parked personal side-thread (NOT part of llm-wiki):**
+  `/Users/jaredleach/Desktop/Alias-TO-DOs/search-tooling-session-notes.md` — `rg`/`rga` vs
+  semantic search teaching notes + a paused "find MYST brand/Shopify files" task. `rga`
+  (ripgrep-all) was installed via Homebrew during that thread.
 
 ---
 
 ## Gotchas to remember
 
 - **Never hand-edit** `plugins/llm-wiki/**` or `plugins/llm-wiki-opencode/**` — generated.
-  Edit `claude-plugin/skills/...`, then re-run both sync scripts.
-- `AGENTS.md` was also modified by the user/linter (the `stacks` tree line) — intentional, don't revert.
-- Related personal notes were moved OUT of this repo to
-  `/Users/jaredleach/Desktop/Alias-TO-DOs/search-tooling-session-notes.md` (has a back-pointer).
-- Repo auth: GitHub CLI web login + HTTPS transport, never SSH (see `CLAUDE.md`).
+  Edit `claude-plugin/skills/...`, then re-run BOTH sync scripts and commit `plugins/`.
+- The Codex SKILL.md `## Workflows` section is **rewritten** by `sync-codex-plugin.sh`, not
+  copied — new workflow entries must be added to that script's replacement block too.
+- Sync tests (`test-codex-sync.sh` / `test-opencode-sync.sh`) compare `plugins/` against
+  committed `HEAD`; they fail on any uncommitted mirror drift and pass once committed.
+- Local-only env: `@anthropic-ai/claude-agent-sdk` was installed with `--no-save` to run the
+  promptfoo eval (lives only in gitignored `node_modules`; `package.json` untouched).
