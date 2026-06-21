@@ -1,5 +1,12 @@
 # llm-wiki Development Guide
 
+> **⚠️ Active WIP — read first.** There is an in-progress feature on branch
+> `feat/wiki-stacks`. Before starting work, open **`RESUME.md`** at the repo root
+> for the handoff: current git state, what's done, and the ordered open items
+> (the two live design decisions are reviewing `claude-plugin/commands/ingest-stack.md`
+> and the version-bump/changelog call). Delete this note and `RESUME.md` once the
+> work is merged upstream.
+
 ## Testing
 
 Run tests before declaring any change to plugin code done.
