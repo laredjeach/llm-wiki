@@ -20,9 +20,16 @@ everything below is in the working tree on branch `master`.
 
 ## Git state at handoff
 
-- Branch: `master` (clean base commit `75623c6 Format v0.12 changelog bullets`)
-- **Nothing staged or committed this session.** ~52 tracked files modified, 5 new untracked (ours).
+- Branch: `feat/wiki-stacks` (off `master` base `75623c6 Format v0.12 changelog bullets`).
+- **Committed + pushed** to the fork as `2f54461 Add wiki stacks category and /wiki:ingest-stack command` (92 files).
 - Plugin version still `0.12.0` — **not bumped** (see Open Items).
+
+### Provenance / remotes
+- This working copy is a **fork**: `origin` → `https://github.com/laredjeach/llm-wiki.git` (where we push),
+  `upstream` → `https://github.com/nvk/llm-wiki.git` (the parent it was cloned from).
+- GitHub also records the link: `laredjeach/llm-wiki` is a fork with `parent: nvk/llm-wiki`.
+- Branch `feat/wiki-stacks` is pushed to `origin`; open a PR to `upstream` (nvk) when ready:
+  `gh pr create --repo nvk/llm-wiki --head laredjeach:feat/wiki-stacks`.
 
 ### New (untracked) files — ours
 ```
@@ -105,13 +112,10 @@ To re-verify after restart:
 3. **Commit** on a feature branch (we're on `master`, the default — branch first):
    `git switch -c feat/wiki-stacks`, stage stack changes + regenerated `plugins/`, commit.
    This greens the two sync tests.
-4. **Push (GitHub).** Per `CLAUDE.md`: use `gh` web login + HTTPS, not SSH:
-   ```bash
-   gh auth login --web --git-protocol https   # if needed
-   git -c credential.helper='!gh auth git-credential' \
-     push https://github.com/nvk/llm-wiki.git feat/wiki-stacks
-   ```
-   (Then open a PR — do NOT push straight to `master` unless that's the intent.)
+4. **Push (GitHub).** ✅ Done — `feat/wiki-stacks` is pushed to the fork `origin`
+   (`laredjeach/llm-wiki`). Auth is `gh` HTTPS (per `CLAUDE.md`; no write access to `nvk`).
+   To open a PR upstream when ready:
+   `gh pr create --repo nvk/llm-wiki --head laredjeach:feat/wiki-stacks`.
 5. **Planned repo move (NOT done):**
    `/Users/jaredleach/Project library/Tools/llm-wiki` → `/Users/jaredleach/Documents/Projects/llm-wiki`
    via a single `mv`. Safe (carries `.git` + untracked). Will invalidate the session CWD —
