@@ -107,6 +107,7 @@ Initialize a new wiki. Parse arguments:
    - `/wiki:inventory add ingest-candidate "title"` — track a candidate, corpus, entity, or next action
    - `/wiki:dataset add "title" --location <path-or-url>` — index a large/external dataset
    - `/wiki:compile` — compile sources into wiki articles
+   - `/wiki:ingest-stack "<scenario>"` — research and compile a layered tool/framework stack page
    - `/wiki:query <question>` — ask questions
 
 ---
@@ -121,6 +122,7 @@ The user typed something that isn't a known keyword. Detect their intent and rou
 |----------|--------|----------------|----------|
 | 0 | **Collection Ingest** | Words: "import wiki", "mirror wiki", "bulk ingest", "ingest collection", "import collection", "ingest repo", "import repo"; or a URL/path plus collection signals: `dump.xml`, `.xml.bz2`, `.xml.gz`, `api.php`, `MediaWiki`, `github.com/*/*` with "all", "repo", "docs", "BIPs", or "collection" | `Skill: wiki:ingest-collection` with the source and filters |
 | 0b | **Collect** | "collect", "collector", "catalog", "curate", "gather examples", "find all", "make a list of", "inventory all", "find and inventory", "collect and inventory"; especially with object words like "memes", "tools", "projects", "examples", "companies", "people", "quotes", "assets", "images", "videos", "screenshots" | `Skill: wiki:collect` |
+| 0c | **Stack** | "stack", "tech stack", "build a stack", "assemble a stack", "toolchain", "what tools/frameworks for", "what should I use to build", "stack page", or a Perplexity/LLM stack export plus "stack"/"layers"/"components" | `Skill: wiki:ingest-stack` with the scenario/source and flags |
 | 1 | **Inventory** | "inventory", "ingest queue", "source queue", "candidate list", "watch list", "backlog", "track this", "keep inventory", "what should become inventory", "migrate output to inventory" | `Skill: wiki:inventory` |
 | 2 | **Dataset** | "dataset", "large data", "too big for the wiki", "index this data", "data registry", "dataset manifest", "corpus manifest", "external data", "query this dataset", "profile dataset" | `Skill: wiki:dataset` |
 | 3 | **Ingest** | Contains a URL (`http://`, `https://`), a file path (`/`, `~/`), or words: "add", "save", "ingest", "read this", "grab this" | `Skill: wiki:ingest` with the URL/path/text |

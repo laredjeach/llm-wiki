@@ -87,7 +87,8 @@ All content lives here. One topic per wiki. Isolated indexes, focused queries.
 │   ├── concepts/*.md              # Bounded ideas
 │   ├── topics/*.md                # Broad themes
 │   ├── references/*.md            # Curated collections
-│   └── theses/*.md                # Thesis investigations with verdicts
+│   ├── theses/*.md                # Thesis investigations with verdicts
+│   └── stacks/*.md                # Stacks — how layered/interlocking components fit together
 └── output/                        # Generated artifacts
     ├── _index.md
     └── *.md
@@ -165,7 +166,7 @@ summary: "2-3 sentence summary"
 ```yaml
 ---
 title: "Article Title"
-category: concept|topic|reference
+category: concept|topic|reference|stack
 sources: [raw/type/file1.md, raw/type/file2.md]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
@@ -177,6 +178,15 @@ summary: "2-3 sentence summary"
 ```
 
 Body includes abstract, sections, `## See Also` (dual-links, bidirectional), `## Sources` (links to raw/).
+
+**Stack pages** (`wiki/stacks/`) are wiki articles with `category: stack` that
+document how a set of layered/interlocking components fits together. They keep the
+standard article fields above and add `topic`, `date`, `scenario`, `llm_usage`,
+`stack_type`, and `related_topics`. The canonical body has `## Problem Context`,
+`## Problem-Oriented Notes` (with `### Key Decisions`), a `## Normalized Stack
+Table`, a `## Comparison & Ratings Table`, `## Stack Overview`, and `## LLM Hints`.
+These extra fields are additive; placement and required-field checks still use the
+standard article schema.
 
 ### Inventory Record (inventory/)
 
@@ -310,7 +320,7 @@ asks for archived content or structural maintenance.
 ## [YYYY-MM-DD] operation | Description
 ```
 
-Operations: `init`, `ingest`, `ingest-collection`, `compile`, `query`, `lint`, `research`, `thesis`, `collect`, `output`, `assess`, `refresh`, `librarian`, `audit`, `plan`, `project`, `inventory`, `dataset`, `archive`, `ll`
+Operations: `init`, `ingest`, `ingest-collection`, `ingest-stack`, `compile`, `query`, `lint`, `research`, `thesis`, `collect`, `output`, `assess`, `refresh`, `librarian`, `audit`, `plan`, `project`, `inventory`, `dataset`, `archive`, `ll`
 
 ## Operations
 
@@ -397,6 +407,36 @@ For large imports, preview the collection manifest shape and estimated child
 count first. If the user only wants to remember the corpus for later, create one
 inventory record; if the corpus is row-like data, create a dataset manifest plus
 one linked inventory record.
+
+### Ingest Stack
+
+Compile a **stack page** — a `category: stack` wiki article in `wiki/stacks/`
+that documents how a coherent set of layered or interlocking components (tools,
+frameworks, services) fits together to address a scenario. This is synthesis,
+not a raw dump. Use it when the user wants a buildable tech stack / toolchain
+for a scenario, or wants to turn a stack-style export (e.g. a Perplexity
+"recommended stack" answer) into a structured wiki page.
+
+The single argument is a scenario description, topic, URL, or file path. Flags:
+`--title`, `--stack-type <type>` (e.g. `web-app`, `data-pipeline`, `agent`,
+`research`), `--from-sources` (assemble only from existing `raw/`, no web
+research), plus the shared `--wiki`, `--local`, `--new-topic`, and
+`--include-archived` flags.
+
+Build flow: frame the scenario and its role groups (ingestion, storage,
+processing, serving, UI, orchestration, observability, …) → gather candidate
+components from `raw/` first, then run targeted web research to fill gaps unless
+`--from-sources` → normalize one canonical entry per (role group, tool) → rate
+and compare options with grounded justifications → write
+`wiki/stacks/<slug>.md` (no date in the slug; stack pages are living documents)
+with the extended frontmatter (`topic`, `date`, `scenario`, `llm_usage`,
+`stack_type`, `related_topics`) on top of the standard article schema, and the
+canonical body (`## Problem Context`, `## Problem-Oriented Notes` with
+`### Key Decisions`, `## Normalized Stack Table`, `## Comparison & Ratings
+Table`, `## Stack Overview`, `## LLM Hints`). Ingest research-worthy sources into
+`raw/` and cite them in `sources:`; do not cite uningested web pages as the
+evidence base. Update the stack, wiki, and master indexes and append a
+`compile | Stack: <Title> (wiki/stacks/<slug>.md)` entry to `log.md`.
 
 ### Compile
 

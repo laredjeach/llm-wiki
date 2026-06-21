@@ -4,8 +4,7 @@ category: concept
 sources:
   - raw/articles/2026-01-01-sample-article.md
   - raw/papers/2026-01-01-sample-paper.md
-  - raw/articles/2026-01-03-deleted.md
-  - "raw/articles/2026-01-03-Title Cased Source.md"
+  - raw/articles/2026-01-03-deleted.md  - "raw/articles/2026-01-03-Title Cased Source.md"
 created: 2026-01-01
 updated: 2026-01-03
 tags: [testing, patterns, evals]

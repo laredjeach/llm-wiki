@@ -33,4 +33,5 @@ See [raw/_index.md](raw/_index.md) for 4 ingested sources.
 - [Concepts](wiki/concepts/_index.md)
 - [Topics](wiki/topics/_index.md)
 - [References](wiki/references/_index.md)
+- [Stacks](wiki/stacks/_index.md)
 - [Outputs](output/_index.md)

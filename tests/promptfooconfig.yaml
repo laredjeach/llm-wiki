@@ -71,6 +71,18 @@ tests:
       - type: cost
         threshold: 0.50
 
+  - description: "Router: stack-building intent routes to ingest-stack"
+    vars:
+      prompt: "Build me a tech stack for a realtime IoT analytics dashboard in my iot wiki"
+    assert:
+      - type: skill-used
+        value: wiki
+      - type: llm-rubric
+        value: "Agent recognized this as a request to assemble/compile a layered tool/framework stack and routed to the ingest-stack workflow (a wiki/stacks/ stack page), not generic research, output, query, or single-source ingestion."
+        threshold: 0.75
+      - type: cost
+        threshold: 0.50
+
   - description: "Router: collect intent routes to collect before inventory or research"
     vars:
       prompt: "Find, collect, and inventory all the memes you can find for bitcoin"

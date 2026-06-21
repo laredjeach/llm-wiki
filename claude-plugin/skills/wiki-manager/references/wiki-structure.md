@@ -93,7 +93,10 @@ HUB/topics/<name>/
 │   ├── references/
 │   │   ├── _index.md
 │   │   └── *.md
-│   └── theses/                    # Thesis investigations
+│   ├── theses/                    # Thesis investigations
+│   │   ├── _index.md
+│   │   └── *.md
+│   └── stacks/                    # Stacks: how layered/interlocking components fit together
 │       ├── _index.md
 │       └── *.md
 └── output/                        # Generated artifacts
@@ -217,6 +220,7 @@ Additionally includes:
 - [Concepts](wiki/concepts/_index.md)
 - [Topics](wiki/topics/_index.md)
 - [References](wiki/references/_index.md)
+- [Stacks](wiki/stacks/_index.md)
 - [Outputs](output/_index.md)
 ```
 
@@ -314,7 +318,7 @@ of overwriting the old one.
 ```markdown
 ---
 title: "Article Title"
-category: concept|topic|reference
+category: concept|topic|reference|stack
 sources: [raw/type/file1.md, raw/type/file2.md]
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
@@ -348,6 +352,29 @@ This ensures both Obsidian (reads [[wikilink]]) and the agent (follows relative 
 
 - [Source Title](../../raw/type/file.md) — what this source contributed
 ```
+
+### Stack Pages (wiki/stacks/)
+
+Stack pages are wiki articles with `category: stack`. They document how a coherent
+set of layered or interlocking components fits together — a technology stack,
+toolchain, or assembled system. They satisfy the standard article schema above
+(`title`, `category: stack`, `sources`, `created`, `updated`, `tags`,
+`confidence`, `summary`) and layer on stack-specific fields:
+
+```yaml
+topic: ""              # the subject the stack serves
+date: ""               # when this stack snapshot was assembled
+scenario: ""           # the problem/use-case the stack addresses
+llm_usage: ""          # how an LLM is (or should be) used in this stack
+stack_type: ""         # e.g. web-app, data-pipeline, agent, research
+related_topics: []     # sibling stacks/topics to cross-link
+```
+
+These extra fields are additive — placement (C11) and required-field checks still
+key off the standard article schema, so a stack page is never quarantined for
+carrying them. The canonical body has `## Problem Context`,
+`## Problem-Oriented Notes` (with `### Key Decisions`), a `## Normalized Stack
+Table`, a `## Comparison & Ratings Table`, `## Stack Overview`, and `## LLM Hints`.
 
 ## Source Reference Resolution
 

@@ -236,6 +236,7 @@ Choose the smallest workflow that matches the request, then load only the
 reference material you need for that workflow:
 
 - `ingest` and `ingest-collection` → `references/ingestion.md`
+- `ingest-stack` → `references/wiki-structure.md` § Stack Pages and `references/compilation.md` (compile a `category: stack` page in `wiki/stacks/`)
 - `collect` → `references/inventory.md` and `references/research-infrastructure.md`
 - `inventory` → `references/inventory.md`
 - `dataset` → `references/datasets.md`

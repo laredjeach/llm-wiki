@@ -357,6 +357,8 @@ Check your installed version:
 /wiki:ingest-collection https://dump.bitcoin.it/dump_20260429_en.xml.bz2 --wiki bitcoin  # Import MediaWiki dumps
 /wiki:ingest-collection messages.csv --adapter csv-messages --wiki bitcoin  # Split message archives
 /wiki:ingest-collection "https://example.com/*" --adapter wayback-cdx --from 20100101 --to 20200101  # Import archived snapshots
+/wiki:ingest-stack "realtime IoT analytics dashboard" --wiki iot  # Research + compile a layered stack page
+/wiki:ingest-stack perplexity-stack-export.md --from-sources  # Turn a stack export into a wiki/stacks/ page
 /wiki:inventory add ingest-candidate "Bitcointalk archive" --wiki bitcoin  # Track source queues and next actions
 /wiki:inventory add item "TRX-4M ring and pinion" --wiki trx4m-1-18  # Track actual parts, tools, hosts, or assets
 /wiki:inventory list --view actions --limit 10   # Compact chat table of current inventory next actions
@@ -409,6 +411,8 @@ folder move plus `wikis.json`, hub index, and log updates.
 | `/wiki:ingest-collection <source>` | Bulk-ingest Git doc repos, BIP-style proposal sets, MediaWiki dumps/API sites, message archives, or Wayback CDX snapshots |
 | `/wiki:ingest-collection <source> --adapter git\|mediawiki-dump\|mediawiki-api\|csv-messages\|wayback-cdx` | Force a collection adapter |
 | `/wiki:ingest-collection <source> --limit <N> --dry-run` | Preview or cap a large collection import |
+| `/wiki:ingest-stack "<scenario>"` | Research and compile a `category: stack` page in `wiki/stacks/` — layered tools/frameworks for a scenario, with normalized + comparison tables |
+| `/wiki:ingest-stack <source> --from-sources --stack-type <type>` | Build a stack page only from existing `raw/` sources, with an explicit stack type |
 | `/wiki:collect "<things>"` | Find, dedupe, and catalog artifacts, examples, resources, media, memes, tools, entities, or source candidates |
 | `/wiki:collect "<things>" --scale tiny\|small\|medium\|large\|huge` | Control write behavior by operational scale, not just row count |
 | `/wiki:collect "<things>" --media archive\|thumbnail\|reference` | Download/cache bounded originals by default; use thumbnail for previews or reference to opt out |
@@ -499,7 +503,8 @@ All commands accept `--wiki <name>` to target a specific topic wiki and `--local
     │   ├── wiki/                       # Compiled articles
     │   │   ├── concepts/
     │   │   ├── topics/
-    │   │   └── references/
+    │   │   ├── references/
+    │   │   └── stacks/                 # Stack pages: how layered tools/frameworks fit together
     │   ├── output/                     # Generated artifacts
     │   ├── _index.md
     │   ├── config.md

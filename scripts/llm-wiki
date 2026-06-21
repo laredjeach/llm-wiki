@@ -20,11 +20,12 @@ from typing import Any
 
 
 RAW_TYPES = {"articles", "papers", "repos", "notes", "data"}
-ARTICLE_CATEGORIES = {"concept", "topic", "reference"}
+ARTICLE_CATEGORIES = {"concept", "topic", "reference", "stack"}
 ARTICLE_DIRS = {
     "concept": "concepts",
     "topic": "topics",
     "reference": "references",
+    "stack": "stacks",
 }
 INVENTORY_KINDS = {
     "item",
@@ -73,7 +74,7 @@ ROOT_ALLOWED = {
 }
 HUB_ALLOWED = {"wikis.json", "_index.md", "log.md", "topics", ".sessions"}
 RAW_ALLOWED = {"_index.md", "articles", "papers", "repos", "notes", "data"}
-WIKI_ALLOWED = {"_index.md", "concepts", "topics", "references", "theses"}
+WIKI_ALLOWED = {"_index.md", "concepts", "topics", "references", "theses", "stacks"}
 INVENTORY_ALLOWED = {
     "_index.md",
     "items",
@@ -507,6 +508,7 @@ def check_structure(ctx: LintContext) -> None:
         ("wiki/topics", "Topics"),
         ("wiki/references", "References"),
         ("wiki/theses", "Theses"),
+        ("wiki/stacks", "Stacks"),
         ("output", "Output"),
     ]
     for rel, title in required:

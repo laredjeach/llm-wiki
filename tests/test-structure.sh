@@ -21,7 +21,7 @@ echo ""
 echo "--- C1: Structure (every existing wiki-managed directory has _index.md) ---"
 
 for dirname in raw raw/articles raw/papers raw/repos raw/notes raw/data \
-               wiki wiki/concepts wiki/topics wiki/references wiki/theses \
+               wiki wiki/concepts wiki/topics wiki/references wiki/theses wiki/stacks \
                inventory inventory/items inventory/candidates inventory/entities inventory/corpora inventory/views \
                datasets datasets/bitcointalk-temporal-graph datasets/bitcointalk-temporal-graph/samples datasets/bitcointalk-temporal-graph/profiles datasets/bitcointalk-temporal-graph/queries \
                output; do
@@ -116,7 +116,7 @@ while IFS= read -r -d '' file; do
   bn=$(basename "$file")
   cat_val=$(grep "^category:" "$file" | head -1 | sed 's/category: *//')
   case "$cat_val" in
-    concept|topic|reference) log_pass "valid category '$cat_val' in $bn" ;;
+    concept|topic|reference|stack) log_pass "valid category '$cat_val' in $bn" ;;
     *) log_fail "invalid category '$cat_val' in $bn" "C2 violation" ;;
   esac
 done < <(find "$GOLDEN/wiki" -name "*.md" -not -name "_index.md" -print0)
@@ -205,7 +205,7 @@ for subdir in articles papers repos notes data; do
   done < <(find "$dir" -maxdepth 1 -name "*.md" -not -name "_index.md" -print0)
 done
 
-for subdir in concepts topics references theses; do
+for subdir in concepts topics references theses stacks; do
   dir="$GOLDEN/wiki/$subdir"
   index="$dir/_index.md"
   [ -f "$index" ] || continue

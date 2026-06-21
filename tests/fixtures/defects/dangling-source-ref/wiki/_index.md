@@ -11,3 +11,6 @@ See [references/_index.md](references/_index.md)
 
 ## Theses
 See [theses/_index.md](theses/_index.md)
+
+## Stacks
+See [stacks/_index.md](stacks/_index.md)
